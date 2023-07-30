@@ -1,11 +1,12 @@
-import React from 'react'
+import useSignOut from "../hooks/useSignOut";
 
-function logout() {
+const SignOutButton = () => {
+  const { handleSignOut } = useSignOut();
+
   return (
-    <div>
-        Hello
-    </div>
-  )
-}
-
-export default logout
+    <button onClick={handleSignOut}>
+      Logout
+    </button>
+  );
+};
+export default SignOutButton;

@@ -1,3 +1,4 @@
+'use client'
 import { useState } from 'react';
 import Link from 'next/link';
 import {ChevronDownIcon} from '@heroicons/react/solid'
@@ -35,16 +36,44 @@ const StudentSidebar = ({isOpen}: StudentSidebarProps) => {
       <div className="flex-grow overflow-y-auto">
         <ul className="px-4 py-2 text-gray-500">
           <li className="my-2">
-            <Link href="/student/dashboard" legacyBehavior>
+            <Link href="/students/dashboard" legacyBehavior>
               <a className="flex items-center justify-between p-2 rounded-md hover:bg-gray-200">
                 Dashboard
               </a>
             </Link>
           </li>
           <li className="my-2">
-            <Link href="/student/formGroup" legacyBehavior>
+            <Link href="/students/formGroup" legacyBehavior>
               <a className="flex items-center justify-between p-2 rounded-md hover:bg-gray-200">
                 Form Group
+              </a>
+            </Link>
+          </li>
+          <li className="my-2">
+            <Link href="/students/submitTitle" legacyBehavior>
+              <a className="flex items-center justify-between p-2 rounded-md hover:bg-gray-200">
+                Submit Title
+              </a>
+            </Link>
+          </li>
+          <li className="my-2">
+            <Link href="/students/projectProgress" legacyBehavior>
+              <a className="flex items-center justify-between p-2 rounded-md hover:bg-gray-200">
+                Project Progress
+              </a>
+            </Link>
+          </li>
+          <li className="my-2">
+            <Link href="/students/uploadProject" legacyBehavior>
+              <a className="flex items-center justify-between p-2 rounded-md hover:bg-gray-200">
+                Upload Project
+              </a>
+            </Link>
+          </li>
+          <li className="my-2">
+            <Link href="/students/viewScoreReport" legacyBehavior>
+              <a className="flex items-center justify-between p-2 rounded-md hover:bg-gray-200">
+                View Score Report
               </a>
             </Link>
           </li>

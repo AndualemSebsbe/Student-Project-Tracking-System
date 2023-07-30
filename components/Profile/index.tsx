@@ -7,35 +7,38 @@ import {
     Wrapper
 } from './UserProfileElements'
 import { useSession, signOut } from "next-auth/react";
-
+import { useRouter } from 'next/router';
 
 const UserProfile = () => {
     const { data: session }: any = useSession();
-
+    const router = useRouter();
     return (
-        <Container>
-            <Wrapper>
-                {
-                    session &&
-                    <>
+        <div>
+            router.push('/');
+        </div>
+        // <Container>
+        //     <Wrapper>
+        //         {
+        //             session &&
+        //             <>
 
-                        <UserName>
-                            {
-                                `Hello ${session?.user?.fullName}`
-                            }
-                        </UserName>
-                        <UserEmail>
-                            {session?.user?.email}
-                        </UserEmail>
+        //                 <UserName>
+        //                     {
+        //                         `Hello ${session?.user?.fullName}`
+        //                     }
+        //                 </UserName>
+        //                 <UserEmail>
+        //                     {session?.user?.email}
+        //                 </UserEmail>
 
-                        <Button
-                            title="Logout"
-                            onClick={signOut}
-                        />
-                    </>
-                }
-            </Wrapper>
-        </Container>
+        //                 <Button
+        //                     title="Logout"
+        //                     onClick={signOut}
+        //                 />
+        //             </>
+        //         }
+        //     </Wrapper>
+        // </Container>
     )
 }
 

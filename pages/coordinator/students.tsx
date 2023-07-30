@@ -1,56 +1,47 @@
+'use client'
 import React from 'react'
 import { ReactElement } from 'react'
-import AdminLayout from '../../components/layout/admin/AdminLayout'
+import CoordinatorLayout from '../../components/layout/coordinator/CoordinatorLayout'
 import {useState} from 'react'
 import Head from 'next/head'
-import { PrismaClient, Student, Prisma } from '@prisma/client'
-import { CreateStudentModal } from '../../components/modals/CreateStudentModal'
+import { CreateStudentModal } from '../../components/modals/createStudentModal'
 import StudentTable from '../../components/studentTable/StudentTable'
-import { GetServerSideProps } from "next"
+import { GetServerSideProps, NextPage } from "next"
+import { connectToMongoDB } from '../../lib/mongodb'
+import User from '../../models/user'
+import {useEffect} from 'react'
+import { RiDeleteBin6Line } from 'react-icons/ri'
+import { MdEdit } from 'react-icons/md'
+// import UpdateStudentModal from '../../components/modals/updateStudentModal'
+import UpdateStudentModal from '../../components/modals/UpdateStudentModal'
+import { Student } from '../../types'
 
-const prisma = new PrismaClient();
-  
-export const getServerSideProps:GetServerSideProps= async() => {
-    const students: Student[] = await prisma.student.findMany({
-      select: {
-        id: true,
-        firstName: true,
-        lastName: true,
-        email: true,
-        studentId: true
-      }
-    });
-    return {
-        props: {
-          initialStudents: students
-        }
-    };
-}
-
- async function saveStudent(student: Prisma.StudentCreateInput){
-  const response = await fetch('/api/admin/students.ts', {
-    method: 'POST',
-    body: JSON.stringify(student)
-  });
-
-  if(!response.ok){
-    throw new Error(response.statusText)
-  }
-
-  return await response.json();
-}
-
-export default function Students ({initialStudents})  {
+const Students = ({_id, fullName}: Student) => {
   const [showModal, setShowModal] = useState(false)
-  const [students, setStudents] = useState<Student[]>(initialStudents)
- 
+  const [updateShowModal, setUpdateShowModal] = useState(false)
+  const [students, setStudents] = useState([]);
+
+  useEffect(() => {
+    // Fetch students data from the API
+    fetch("/api/students")
+      .then((response) => response.json())
+      .then((data) => {
+        setStudents(data.students);
+      })
+      .catch((error) => {
+        console.log("Error fetching students:", error);
+      });
+  }, []);
+
+  
+  console.log(students)
   return (
     <div className='flex'>
-      <AdminLayout/>
+      <CoordinatorLayout/>
       <div className='w-full'>
         <div className="flex justify-end mb-10 mt-12">
           <button
-            className="bg-primary text-white text-sm px-4 py-2 rounded shadow hover:shadow-lg "
+            className="bg-blue-500 text-white text-sm px-4 py-2 rounded shadow hover:shadow-lg "
             type="button"
             onClick={() => setShowModal(true)}
           >
@@ -58,8 +49,7 @@ export default function Students ({initialStudents})  {
           </button>
         </div>
         {showModal ? (
-          <CreateStudentModal 
-          students={students}
+          <CreateStudentModal
           setShowModal={setShowModal} 
           showModal={showModal}
           // role="STUDENT"
@@ -75,38 +65,36 @@ export default function Students ({initialStudents})  {
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th scope="col" className="px-6 py-3">
-                      First Name
+                      Full Name <span className='text-gray-700'>Full Name Full Name</span>
                     </th>
                     <th scope="col" className="px-6 py-3">
-                        Last Name
+                        Email <span className='text-gray-700'>Email Email Email Email Email</span>
+                    </th>
+                    <th >
+
                     </th>
                     <th scope="col" className="px-6 py-3">
-                        Email
+                        Student ID <span className='text-gray-700'>Student ID</span>
                     </th>
                     <th scope="col" className="px-6 py-3">
-                        Student ID
+                        Password
                     </th>
                     <th scope="col" className="px-6 py-3">
                         Action
                     </th>
                 </tr>
-              </thead>             
-          </table>        
-          {students.map((student: Student, i: number) =>(
-            <div key={i}>
-              <StudentTable student={student} />
-            </div>
+              </thead>  
+              {/* <tbody> */}
+                
+              {/* </tbody>            */}
+          </table>
+          {students.map((student) => (
+            <StudentTable key={student._id} {...student}/>
           ))}
-         
         </div>
       </div>
-      
     </div>
   )
 }
 
-
-// students.getLayout = function getLayout(page: ReactElement) {
-//     return <AdminLayout>{page}</AdminLayout>
-// }
-// export default Students
+export default Students;

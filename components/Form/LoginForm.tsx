@@ -1,115 +1,133 @@
-import React, { useState } from 'react'
-import { useRouter } from 'next/router'
-import { AxiosError } from 'axios'
-import { AiOutlineMail, AiOutlineUnlock } from 'react-icons/ai'
-import { loginUser } from '../../helpers'
-import AppLogoTitle from '../AppLogoTitle'
-import Button from '../Button'
-import {
-    Container,
-    Form,
-    FormTitle,
-    InfoText,
-    InfoTextContainer,
-    Link
-} from './FormElements'
-import InputFeild from './InputFeild'
-import { ErrorText } from './InputFeildElements'
+// import React, { useState } from 'react'
+// import { useRouter, usePathname } from 'next/navigation'
+// import { BsPerson } from 'react-icons/bs'
+// import { AiOutlineUnlock } from 'react-icons/ai'
+// import Button from '../Button'
+// import { signIn } from 'next-auth/react';
 
-const LoginForm = () => {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [loading, setLoading] = useState(false)
-    const [submitError, setSubmitError] = useState("")
-    const router = useRouter()
+// import {
+//     Container,
+//     Form,
+//     FormTitle,
+//     InfoText,
+//     InfoTextContainer,
+//     Link
+// } from './FormElements'
+// import InputFeild from './InputFeild'
+// import { ErrorText } from './InputFeildElements'
 
-    const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(event.target.value)
-    }
+// const LoginForm = () => {
+//     const [username, setUsername] = useState("")
+//     const [password, setPassword] = useState("")
+//     const [loading, setLoading] = useState(false)
+//     const [submitError, setSubmitError] = useState("")
+//     const [user, setUser] = useState(null);
+//     const router = useRouter()
+//     const pathName = usePathname()
 
-    const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(event.target.value)
-    }
+//     const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//         setUsername(event.target.value)
+//     }
 
-    const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault()
+//     const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//         setPassword(event.target.value)
+//     }
 
-        try {
-            setLoading(true)
+//     const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+//         event.preventDefault()
 
-            const loginRes = await loginUser({ email, password })
+//         const result = await signIn('credentials', {
+//             username,
+//             password,
+//             redirect: false, // Prevent default redirection
+//           });
+      
+//           if (result?.error) {
+//             // Handle authentication error
+//             console.log(result.error);
+//           } else {
+//             // Redirect to the user's page based on their role
+//             const role = result?.user?.role;
+//             switch (role) {
+//               case 'student':
+//                 router.push('/students/formGroup');
+//                 break;
+//               case 'coordinator':
+//                 router.push('/coordinator/dashboard');
+//                 break;
+//               case 'guest':
+//                 router.push('/');
+//                 break;
+//               case 'advisor':
+//                 router.push('/advisors/dashboard');
+//                 break;
+//               case 'examiner':
+//                 router.push('/examiners/dashboard');
+//                 break;
+//               default:
+//                 router.push('/'); // Default redirect if role is not recognized
+//                 break;
+//             }
+//           }
 
-            if (loginRes && !loginRes.ok) {
-                setSubmitError(loginRes.error || "")
-            }
-            else {
-                router.push("/coordinator/dashboard")
-            }
-        } catch (error) {
-            if (error instanceof AxiosError) {
-                const errorMsg = error.response?.data?.error
-                setSubmitError(errorMsg)
-            }
-        }
+//         setLoading(false)
+//     }
 
-        setLoading(false)
-    }
-
-    return (
-        <Container>
+//     return (
+//         <Container>
             
-            <AppLogoTitle />
-            <Form onSubmit={handleLogin} className="space-y-6 ">
-                <FormTitle> Login </FormTitle>
+//             {/* <AppLogoTitle /> */}
+//             <Form onSubmit={handleLogin} className="space-y-6 ">
+//                 <FormTitle> Login </FormTitle>
 
-                <InputFeild
-                    placeholder='Email'
-                    type='email'
-                    icon={<AiOutlineMail />}
-                    value={email}
-                    onChange={handleEmailChange}
-                    required
-                />
+//                 <InputFeild
+//                     placeholder='Username'
+//                     type='text'
+//                     icon={<BsPerson />}
+//                     value={username}
+//                     onChange={handleUsernameChange}
+//                     required
+//                 />
 
-                <InputFeild
-                    placeholder='password'
-                    type='password'
-                    icon={<AiOutlineUnlock />}
-                    value={password}
-                    onChange={handlePasswordChange}
-                    required
-                />
+//                 <InputFeild
+//                     placeholder='password'
+//                     type='password'
+//                     icon={<AiOutlineUnlock />}
+//                     value={password}
+//                     onChange={handlePasswordChange}
+//                     required
+//                 />
 
-                <Link href="/forgot-password">
-                    Forgot Password?
-                </Link>
+//                 <Link href="/forgot-password">
+//                     Forgot Password?
+//                 </Link>
 
-                <Button
-                    type='submit'
-                    title='Login'
-                    disabled={loading}
-                />
+//                 <Button
+//                     type='submit'
+//                     title='Login'
+//                     disabled={loading}
+//                 />
 
-                {
-                    submitError &&
-                    <ErrorText>
-                        {submitError}
-                    </ErrorText>
-                }
+//                 {
+//                     submitError &&
+//                     <ErrorText>
+//                         {submitError}
+//                     </ErrorText>
+//                 }
 
-                <InfoTextContainer>
-                    <InfoText>
-                        New User?
-                    </InfoText>
+//                 <InfoTextContainer>
+//                     <InfoText>
+//                         New User?
+//                     </InfoText>
 
-                    <Link href='/signup'>
-                        Create an Account
-                    </Link>
-                </InfoTextContainer>
-            </Form>
+//                     <Link href='/signup'>
+//                         Create an Account
+//                     </Link>
+//                 </InfoTextContainer>
+//             </Form>
             
-        </Container>
-    )
-}
+//         </Container>
+//     )
+// }
 
-export default LoginForm
+// export default LoginForm

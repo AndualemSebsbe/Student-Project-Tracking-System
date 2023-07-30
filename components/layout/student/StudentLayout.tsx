@@ -27,10 +27,10 @@ const StudentLayout = ({
                 <StudentSidebar isOpen={openSidebar} />
             </div>
             <div className="flex flex-1 flex-col">
-            <CoordintorNavbar
+            {/* <CoordintorNavbar
               openSidebar={openSidebar}
               setOpenSidebar={setOpenSidebar}
-            />
+            /> */}
             <div className="paragraph flex flex-1 grow flex-col overflow-y-auto p-6 pt-24">
               {children}
             </div>
